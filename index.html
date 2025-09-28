@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minority Language Form Translator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Minority Language Form Translator</h1>
+        
+        <h2>1. Upload Form/Notice</h2>
+        
+        <!-- Document Upload Section -->
+        <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+            <h3>📄 Upload Document</h3>
+            <form id="uploadForm">
+                <input type="file" id="fileInput" accept=".pdf,image/*,.doc,.docx" required>
+                <button type="submit">Upload and Extract</button>
+            </form>
+        </div>
+        
+        <!-- Image Upload Section -->
+        <div style="margin-bottom: 20px; padding: 15px; background: #fff0f5; border-radius: 5px;">
+            <h3>🖼️ Upload Image with Text</h3>
+            <form id="imageUploadForm">
+                <input type="file" id="imageFileInput" accept="image/*" required>
+                <button type="submit">Upload Image and Extract Text</button>
+            </form>
+            <div style="margin-top: 10px; padding: 10px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; font-size: 12px;">
+                <strong>Supported formats:</strong> PNG, JPG, JPEG, GIF. Works best with clear, high-contrast text.
+            </div>
+        </div>
+        
+        <!-- Audio Upload Section -->
+        <div style="margin-bottom: 20px; padding: 15px; background: #e8f5e8; border-radius: 5px;">
+            <h3>🎵 Upload Audio File</h3>
+            <form id="audioUploadForm">
+                <input type="file" id="audioFileInput" accept=".mp3,.wav,.m4a,.ogg" required>
+                <button type="submit">Upload Audio and Extract Text</button>
+            </form>
+            <div style="margin-top: 10px; padding: 10px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; font-size: 12px;">
+                <strong>Supported formats:</strong> MP3, WAV, M4A, OGG.<br>
+                <strong>⚠️ Note:</strong> WAV files work best (no FFmpeg required). For other formats, install FFmpeg or use the live recording feature.
+            </div>
+        </div>
+        
+        <div style="margin: 20px 0; padding: 15px; background: #f0f8ff; border-radius: 5px;">
+            <h3>Audio Recording Option</h3>
+            <p>You can also record audio directly:</p>
+            <button id="startRecording" style="background: #28a745;">Start Recording</button>
+            <button id="stopRecording" style="background: #dc3545; display: none;">Stop Recording</button>
+            <button id="playRecording" style="background: #17a2b8; display: none;">Play Recording</button>
+            <div id="recordingStatus" style="margin-top: 10px; font-weight: bold;"></div>
+            <audio id="audioPlayback" controls style="display: none; width: 100%; margin-top: 10px;"></audio>
+            <div style="margin-top: 10px; padding: 10px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; font-size: 12px;">
+                <strong>Note:</strong> For best results, use WAV files. If you get conversion errors, try recording in WAV format or install FFmpeg.
+            </div>
+        </div>
+
+        <div id="extractedTextSection" style="display: none;">
+            <h2>2. Extracted Text</h2>
+            <textarea id="extractedText" rows="4" readonly></textarea>
+            <div style="margin: 10px 0;">
+                <label for="targetLanguage">Translate to:</label>
+                <select id="targetLanguage" style="margin-left: 10px; padding: 5px;">
+                    <option value="mr">Marathi (मराठी)</option>
+                    <option value="ur">Urdu (اردو)</option>
+                    <option value="ml">Malayalam (മലയാളം)</option>
+                    <option value="gon">Gondi (गोंडी) → Malayalam</option>
+                    <option value="sat">Santali (ᱥᱟᱱᱛᱟᱲᱤ) → Malayalam</option>
+                </select>
+            </div>
+            <button id="translateBtn">Translate Form</button>
+        </div>
+
+        <div id="translationSection" style="display: none;">
+            <h2>3. Translated Preview</h2>
+            <textarea id="translatedText" rows="4" readonly></textarea>
+        </div>
+
+        <div id="answerSection" style="display: none;">
+            <h2>4. Enter Your Answers</h2>
+            <textarea id="userAnswer" rows="2" placeholder="Type your answers in your language here..."></textarea>
+            <button id="backTranslateBtn">Back-Translate</button>
+        </div>
+        
+        <div id="backTranslationSection" style="display: none;">
+            <h2>5. Copy Your Translated Answer</h2>
+            <textarea id="backTranslatedText" rows="2" readonly></textarea>
+            <button onclick="copyBackTranslation()">Copy Text</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
