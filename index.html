@@ -3,95 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minority Language Form Translator</title>
+    <title>Lingua Link</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Minority Language Form Translator</h1>
+        <header>
+            <h1>Lingua Link</h1>
+            <p class="subtitle">Your vital bridge for seamless document, audio, and image translation across minority languages.</p>
+        </header>
         
-        <h2>1. Upload Form/Notice</h2>
-        
-        <!-- Document Upload Section -->
-        <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px;">
-            <h3>📄 Upload Document</h3>
-            <form id="uploadForm">
-                <input type="file" id="fileInput" accept=".pdf,image/*,.doc,.docx" required>
-                <button type="submit">Upload and Extract</button>
-            </form>
-        </div>
-        
-        <!-- Image Upload Section -->
-        <div style="margin-bottom: 20px; padding: 15px; background: #fff0f5; border-radius: 5px;">
-            <h3>🖼️ Upload Image with Text</h3>
-            <form id="imageUploadForm">
-                <input type="file" id="imageFileInput" accept="image/*" required>
-                <button type="submit">Upload Image and Extract Text</button>
-            </form>
-            <div style="margin-top: 10px; padding: 10px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; font-size: 12px;">
-                <strong>Supported formats:</strong> PNG, JPG, JPEG, GIF. Works best with clear, high-contrast text.
-            </div>
-        </div>
-        
-        <!-- Audio Upload Section -->
-        <div style="margin-bottom: 20px; padding: 15px; background: #e8f5e8; border-radius: 5px;">
-            <h3>🎵 Upload Audio File</h3>
-            <form id="audioUploadForm">
-                <input type="file" id="audioFileInput" accept=".mp3,.wav,.m4a,.ogg" required>
-                <button type="submit">Upload Audio and Extract Text</button>
-            </form>
-            <div style="margin-top: 10px; padding: 10px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; font-size: 12px;">
-                <strong>Supported formats:</strong> MP3, WAV, M4A, OGG.<br>
-                <strong>⚠️ Note:</strong> WAV files work best (no FFmpeg required). For other formats, install FFmpeg or use the live recording feature.
-            </div>
-        </div>
-        
-        <div style="margin: 20px 0; padding: 15px; background: #f0f8ff; border-radius: 5px;">
-            <h3>Audio Recording Option</h3>
-            <p>You can also record audio directly:</p>
-            <button id="startRecording" style="background: #28a745;">Start Recording</button>
-            <button id="stopRecording" style="background: #dc3545; display: none;">Stop Recording</button>
-            <button id="playRecording" style="background: #17a2b8; display: none;">Play Recording</button>
-            <div id="recordingStatus" style="margin-top: 10px; font-weight: bold;"></div>
-            <audio id="audioPlayback" controls style="display: none; width: 100%; margin-top: 10px;"></audio>
-            <div style="margin-top: 10px; padding: 10px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; font-size: 12px;">
-                <strong>Note:</strong> For best results, use WAV files. If you get conversion errors, try recording in WAV format or install FFmpeg.
-            </div>
-        </div>
+        <section id="upload-module" class="workflow-module">
+            <h2>Step 1: Upload & Extract Source</h2>
+            
+            <div class="tab-container">
+                <div class="tabs">
+                    <button class="tab-button active" onclick="openTab(event, 'tab-document')">📄 Document</button>
+                    <button class="tab-button" onclick="openTab(event, 'tab-image')">📸 Image</button>
+                    <button class="tab-button" onclick="openTab(event, 'tab-audio')">🎤 Audio</button>
+                </div>
 
-        <div id="extractedTextSection" style="display: none;">
-            <h2>2. Extracted Text</h2>
-            <textarea id="extractedText" rows="4" readonly></textarea>
-            <div style="margin: 10px 0;">
+                <div id="tab-document" class="tab-content active">
+                    <h3>Upload Document (PDF, DOCX, Image Files)</h3>
+                    <form id="uploadForm">
+                        <input type="file" id="fileInput" accept=".pdf,image/*,.doc,.docx" required>
+                        <button type="submit">Upload and Extract</button>
+                    </form>
+                    <div class="note-box">
+                        <strong>Tip:</strong> Upload high-quality scans or PDFs for best results.
+                    </div>
+                </div>
+
+                <div id="tab-image" class="tab-content" style="display: none;">
+                    <h3>Upload Image with Text</h3>
+                    <form id="imageUploadForm">
+                        <input type="file" id="imageFileInput" accept="image/*" required>
+                        <button type="submit">Upload Image and Extract Text</button>
+                    </form>
+                    <div class="note-box">
+                        <strong>Note:</strong> Ensure the text is clear and readable on the image (PNG, JPG).
+                    </div>
+                </div>
+
+                <div id="tab-audio" class="tab-content" style="display: none;">
+                    
+                    <div class="audio-option-section">
+                        <h3>Upload Audio File</h3>
+                        <form id="audioUploadForm">
+                            <input type="file" id="audioFileInput" accept=".mp3,.wav,.m4a,.ogg" required>
+                            <button type="submit">Upload Audio and Extract Text</button>
+                        </form>
+                    </div>
+
+                    <div class="audio-option-section recording-option">
+                        <h3>Live Recording</h3>
+                        <p>Record audio directly using your microphone:</p>
+                        <div class="recording-controls">
+                            <button id="startRecording">Start Recording</button>
+                            <button id="stopRecording" style="display: none;">Stop Recording</button>
+                            <button id="playRecording" style="display: none;">Play Recording</button>
+                        </div>
+                        <div id="recordingStatus">Ready to record</div>
+                        <audio id="audioPlayback" controls style="display: none;"></audio>
+                        </div>
+                    
+                    <div class="note-box">
+                        <strong>WAV files work best.</strong> If conversion fails, check your environment setup (e.g., FFmpeg).
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        
+        <section id="extractedTextSection" class="workflow-module" style="display: none;">
+            <h2>Step 2: Extracted Text</h2>
+            <textarea id="extractedText" rows="8" readonly></textarea>
+            
+            <div class="translation-options">
                 <label for="targetLanguage">Translate to:</label>
-                <select id="targetLanguage" style="margin-left: 10px; padding: 5px;">
+                <select id="targetLanguage">
                     <option value="mr">Marathi (मराठी)</option>
                     <option value="ur">Urdu (اردو)</option>
                     <option value="ml">Malayalam (മലയാളം)</option>
                     <option value="gon">Gondi (गोंडी) → Malayalam</option>
                     <option value="sat">Santali (ᱥᱟᱱᱛᱟᱲᱤ) → Malayalam</option>
                 </select>
+                <button id="translateBtn">Translate Form</button>
             </div>
-            <button id="translateBtn">Translate Form</button>
-        </div>
+        </section>
 
-        <div id="translationSection" style="display: none;">
+        <section id="translationSection" class="workflow-module" style="display: none;">
             <h2>3. Translated Preview</h2>
-            <textarea id="translatedText" rows="4" readonly></textarea>
-        </div>
+            <label for="translatedText">Translated Form (User Language):</label>
+            <textarea id="translatedText" rows="8" readonly></textarea>
+        </section>
 
-        <div id="answerSection" style="display: none;">
+        <section id="answerSection" class="workflow-module" style="display: none;">
             <h2>4. Enter Your Answers</h2>
-            <textarea id="userAnswer" rows="2" placeholder="Type your answers in your language here..."></textarea>
+            <label for="userAnswer">Your Answers (in your Language):</label>
+            <textarea id="userAnswer" rows="6" placeholder="Type your answers here..."></textarea>
             <button id="backTranslateBtn">Back-Translate</button>
-        </div>
+        </section>
         
-        <div id="backTranslationSection" style="display: none;">
+        <section id="backTranslationSection" class="workflow-module" style="display: none;">
             <h2>5. Copy Your Translated Answer</h2>
-            <textarea id="backTranslatedText" rows="2" readonly></textarea>
+            <label for="backTranslatedText">Final Answer (Minority Language):</label>
+            <textarea id="backTranslatedText" rows="6" readonly></textarea>
             <button onclick="copyBackTranslation()">Copy Text</button>
-        </div>
+        </section>
     </div>
+
     <script src="script.js"></script>
+    <script>
+        // CLIENT-SIDE JAVASCRIPT FOR TAB FUNCTIONALITY
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!document.querySelector('.tab-button.active')) {
+                const firstTabButton = document.querySelector('.tab-button');
+                if (firstTabButton) {
+                    firstTabButton.click();
+                }
+            }
+        });
+    </script>
 </body>
 </html>

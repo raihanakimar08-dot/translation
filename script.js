@@ -33,14 +33,83 @@ document.addEventListener('DOMContentLoaded', function() {
     let audioChunks = [];
     let recordedAudioBlob;
 
-    // Handle file input change to show selected file
+    // --- NEW/MODIFIED LOGIC FOR RECORDED AUDIO UPLOAD ---
+
+    // Function to upload recorded audio
+    function uploadRecordedAudio() {
+        if (!recordedAudioBlob) {
+            alert('No audio recorded. Please record audio first.');
+            return;
+        }
+
+        const formData = new FormData();
+        // Append the recorded audio blob as a file
+        formData.append('file', recordedAudioBlob, 'recording.wav');
+
+        // Target the dynamically created button for visual feedback
+        const submitBtn = document.getElementById('uploadRecordedAudioBtn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Processing Audio...';
+        submitBtn.disabled = true;
+
+        fetch('/upload', { // Uses the same backend endpoint as other uploads
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('Error: ' + data.error);
+            } else {
+                extractedText.value = data.text;
+                extractedTextSection.style.display = 'block';
+                // Also display translation steps
+                translationSection.style.display = 'block';
+                answerSection.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while processing the audio.');
+        })
+        .finally(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
+    }
+
+    // FIX: Function to dynamically show the Upload button after recording
+    function showUploadRecordedAudioButton() {
+        const recordingOptionDiv = document.querySelector('.recording-option');
+        if (!recordingOptionDiv) return;
+
+        // 1. Remove any existing button to prevent duplicates
+        const existingUploadBtn = document.getElementById('uploadRecordedAudioBtn');
+        if (existingUploadBtn) existingUploadBtn.remove();
+        
+        // 2. Create the new button
+        const uploadAudioBtn = document.createElement('button');
+        uploadAudioBtn.id = 'uploadRecordedAudioBtn'; 
+        uploadAudioBtn.textContent = 'Upload Recorded Audio';
+        
+        // 3. Attach the corrected click handler
+        uploadAudioBtn.addEventListener('click', uploadRecordedAudio);
+        
+        // 4. Insert the button into the recording option div, after the audio playback element
+        const audioPlayback = document.getElementById('audioPlayback');
+        recordingOptionDiv.insertBefore(uploadAudioBtn, audioPlayback.nextSibling);
+    }
+
+    // --- EXISTING LOGIC (Modified to call the new function) ---
+
+    // Handle file input change to show selected file (Keep this for debugging)
     fileInput.addEventListener('change', function() {
         if (this.files && this.files[0]) {
             console.log('File selected:', this.files[0].name);
         }
     });
 
-    // Handle form submission
+    // Handle form submission (Document)
     uploadForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -69,6 +138,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 extractedText.value = data.text;
                 extractedTextSection.style.display = 'block';
+                translationSection.style.display = 'block';
+                answerSection.style.display = 'block';
             }
         })
         .catch(error => {
@@ -81,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle translation
+    // Handle translation (Keep original logic)
     translateBtn.addEventListener('click', function() {
         const text = extractedText.value;
         if (!text.trim()) {
@@ -123,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle back translation
+    // Handle back translation (Keep original logic)
     backTranslateBtn.addEventListener('click', function() {
         const text = userAnswer.value;
         if (!text.trim()) {
@@ -164,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle image file upload form submission
+    // Handle image file upload form submission (Keep original logic)
     imageUploadForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -193,6 +264,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 extractedText.value = data.text;
                 extractedTextSection.style.display = 'block';
+                translationSection.style.display = 'block';
+                answerSection.style.display = 'block';
             }
         })
         .catch(error => {
@@ -205,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle audio file upload form submission
+    // Handle audio file upload form submission (Keep original logic)
     audioUploadForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -234,6 +307,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 extractedText.value = data.text;
                 extractedTextSection.style.display = 'block';
+                translationSection.style.display = 'block';
+                answerSection.style.display = 'block';
             }
         })
         .catch(error => {
@@ -246,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Audio recording functionality
+    // Audio recording functionality (MODIFIED onstop)
     startRecordingBtn.addEventListener('click', async function() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -258,6 +333,7 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             mediaRecorder.onstop = function() {
+                // Determine the correct blob type
                 recordedAudioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 const audioUrl = URL.createObjectURL(recordedAudioBlob);
                 audioPlayback.src = audioUrl;
@@ -265,13 +341,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 playRecordingBtn.style.display = 'inline-block';
                 recordingStatus.textContent = 'Recording completed! (WAV format)';
                 recordingStatus.style.color = 'green';
+                
+                // CRITICAL FIX: Show the upload button now in the correct location
+                showUploadRecordedAudioButton();
             };
 
             mediaRecorder.start();
             startRecordingBtn.style.display = 'none';
             stopRecordingBtn.style.display = 'inline-block';
+            playRecordingBtn.style.display = 'none';
             recordingStatus.textContent = 'Recording... Speak now!';
             recordingStatus.style.color = 'red';
+
+            // Hide the upload button while recording if it exists
+            const existingUploadBtn = document.getElementById('uploadRecordedAudioBtn');
+            if(existingUploadBtn) existingUploadBtn.remove();
+
         } catch (error) {
             console.error('Error accessing microphone:', error);
             alert('Error accessing microphone. Please check permissions.');
@@ -292,56 +377,20 @@ document.addEventListener('DOMContentLoaded', function() {
             audioPlayback.play();
         }
     });
-
-    // Function to upload recorded audio
-    function uploadRecordedAudio() {
-        if (!recordedAudioBlob) {
-            alert('No audio recorded. Please record audio first.');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('file', recordedAudioBlob, 'recording.wav');
-
-        // Show loading state
-        const submitBtn = uploadForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Processing Audio...';
-        submitBtn.disabled = true;
-
-        fetch('/upload', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert('Error: ' + data.error);
-            } else {
-                extractedText.value = data.text;
-                extractedTextSection.style.display = 'block';
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while processing the audio.');
-        })
-        .finally(() => {
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        });
-    }
-
-    // Add upload button for recorded audio
+    
+    // REMOVE THE OLD APPEND BUTTON BLOCK!
+    /*
     const uploadAudioBtn = document.createElement('button');
     uploadAudioBtn.textContent = 'Upload Recorded Audio';
     uploadAudioBtn.style.background = '#6f42c1';
     uploadAudioBtn.style.marginTop = '10px';
     uploadAudioBtn.addEventListener('click', uploadRecordedAudio);
-    document.querySelector('.container').appendChild(uploadAudioBtn);
+    document.querySelector('.container').appendChild(uploadAudioBtn); // <-- REMOVED
+    */
+
 });
 
-// Copy back translation to clipboard
+// Copy back translation to clipboard (Keep original logic)
 function copyBackTranslation() {
     const backTranslatedText = document.getElementById('backTranslatedText');
     backTranslatedText.select();

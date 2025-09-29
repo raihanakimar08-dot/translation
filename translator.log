@@ -1,0 +1,36 @@
+2025-09-28 22:06:45,064 - __main__ - INFO - Tesseract found at: C:\Program Files\Tesseract-OCR\tesseract.exe
+2025-09-28 22:06:45,072 - __main__ - INFO - Starting Minority Language Form Translator server...
+2025-09-28 22:06:45,073 - __main__ - INFO - Supported languages: ['mr', 'ur', 'ml', 'hi', 'bn', 'te', 'ta', 'gu', 'kn', 'pa', 'gon', 'sat', 'mai', 'bho']
+2025-09-28 22:06:45,175 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.8:5000
+2025-09-28 22:06:45,176 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-28 22:06:45,178 - werkzeug - INFO -  * Restarting with stat
+2025-09-28 22:06:46,584 - __main__ - INFO - Tesseract found at: C:\Program Files\Tesseract-OCR\tesseract.exe
+2025-09-28 22:06:46,590 - __main__ - INFO - Starting Minority Language Form Translator server...
+2025-09-28 22:06:46,590 - __main__ - INFO - Supported languages: ['mr', 'ur', 'ml', 'hi', 'bn', 'te', 'ta', 'gu', 'kn', 'pa', 'gon', 'sat', 'mai', 'bho']
+2025-09-28 22:06:46,617 - werkzeug - WARNING -  * Debugger is active!
+2025-09-28 22:06:46,624 - werkzeug - INFO -  * Debugger PIN: 132-784-750
+2025-09-28 22:07:46,704 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 22:07:46] "GET / HTTP/1.1" 200 -
+2025-09-28 22:07:46,761 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 22:07:46] "GET /script.js HTTP/1.1" 200 -
+2025-09-28 22:07:46,763 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 22:07:46] "GET /style.css HTTP/1.1" 200 -
+2025-09-28 22:07:52,662 - werkzeug - INFO - 127.0.0.1 - - [28/Sep/2025 22:07:52] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-28 22:44:36,600 - __main__ - INFO - Tesseract found at: C:\Program Files\Tesseract-OCR\tesseract.exe
+2025-09-28 22:44:36,605 - __main__ - INFO - Starting Minority Language Form Translator server...
+2025-09-28 22:44:36,606 - __main__ - INFO - Supported languages: ['mr', 'ur', 'ml', 'hi', 'bn', 'te', 'ta', 'gu', 'kn', 'pa', 'gon', 'sat', 'mai', 'bho']
+2025-09-28 22:44:36,694 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.8:5000
+2025-09-28 22:44:36,694 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-28 22:44:36,696 - werkzeug - INFO -  * Restarting with stat
+2025-09-28 22:44:39,076 - __main__ - INFO - Tesseract found at: C:\Program Files\Tesseract-OCR\tesseract.exe
+2025-09-28 22:44:39,081 - __main__ - INFO - Starting Minority Language Form Translator server...
+2025-09-28 22:44:39,082 - __main__ - INFO - Supported languages: ['mr', 'ur', 'ml', 'hi', 'bn', 'te', 'ta', 'gu', 'kn', 'pa', 'gon', 'sat', 'mai', 'bho']
+2025-09-28 22:44:39,106 - werkzeug - WARNING -  * Debugger is active!
+2025-09-28 22:44:39,663 - werkzeug - INFO -  * Debugger PIN: 132-784-750
+2025-09-28 22:44:51,545 - werkzeug - INFO - 192.168.1.8 - - [28/Sep/2025 22:44:51] "GET / HTTP/1.1" 200 -
+2025-09-28 22:44:51,704 - werkzeug - INFO - 192.168.1.8 - - [28/Sep/2025 22:44:51] "GET /style.css HTTP/1.1" 200 -
+2025-09-28 22:44:51,866 - werkzeug - INFO - 192.168.1.8 - - [28/Sep/2025 22:44:51] "GET /script.js HTTP/1.1" 200 -
+2025-09-28 22:44:53,845 - werkzeug - INFO - 192.168.1.8 - - [28/Sep/2025 22:44:53] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
