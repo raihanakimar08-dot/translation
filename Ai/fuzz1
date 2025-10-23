@@ -1,0 +1,20 @@
+import numpy as np
+import skfuzzy as fuzz
+
+# Universe of discourse
+temp = np.linspace(0, 40, 100)   # Temperature
+speed = np.linspace(0, 100, 100) # Fan speed
+
+# Membership functions
+temp_high = fuzz.trapmf(temp, [25, 30, 40, 40])
+speed_fast = fuzz.trapmf(speed, [60, 70, 100, 100])
+
+# Example input
+temp_val = 32
+temp_level = fuzz.interp_membership(temp, temp_high, temp_val)
+
+# Apply rule (implication: min)
+fan_activation = np.fmin(temp_level, speed_fast)
+
+print("Temperature:", temp_val, "→ Fan activation strength:", temp_level)
+
